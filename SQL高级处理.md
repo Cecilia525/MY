@@ -58,7 +58,7 @@ SELECT product_id, product_name, sale_price,
  
 <img width="577" alt="5" src="https://user-images.githubusercontent.com/80468800/119226597-82186200-bb3c-11eb-8b5c-f0ea96923edf.png">
 
-*AVG函数作为窗口函数使用*    
+* AVG函数作为窗口函数使用  
   **代码：**  
   SELECT product_id, product_name, sale_price,  
 　　AVG (sale_price) OVER ( ORDER BY product_id ) AS current_avg  
@@ -174,9 +174,9 @@ SELECT product_type, SUM(sale_price)
 * 为了避免混淆NULL,SQL 提供了一个用来判断超级分组记录的 NULL 的特定函数 —— GROUPING 函数。该函数在其参数列的值为超级分组记录所产生的 NULL 时返回1，其他情况返回0。  
  **代码**  
  SELECT GROUPING(product_type) AS product_type,   
-  GROUPING(regist_date) AS regist_date, SUM(sale_price) AS sum_price  
-  FROM Product  
-  GROUP BY ROLLUP(product_type, regist_date)  
+   GROUPING(regist_date) AS regist_date, SUM(sale_price) AS sum_price  
+   FROM Product  
+   GROUP BY ROLLUP(product_type, regist_date)  
  *输出结果*
 
 <img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226662-da4f6400-bb3c-11eb-83cb-47909dd38348.png">
@@ -185,14 +185,14 @@ SELECT product_type, SUM(sale_price)
 * 使用 GROUPING 函数还能在超级分组记录的键值中插入字符串。也就是说，当 GROUPING 函数的返回值为 1 时，指定“合计”或者“小计”等字符串，其他情况返回通常的列的值。  
  **代码**  
  SELECT CASE WHEN GROUPING(product_type) = 1   
-  THEN '商品种类 合计'   
-  ELSE product_type END AS product_type,  
-  CASE WHEN GROUPING(regist_date) = 1   
-  THEN '登记日期 合计'  
-  ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
-  SUM(sale_price) AS sum_price  
-  FROM Product  
-  GROUP BY ROLLUP(product_type, regist_date);  
+   THEN '商品种类 合计'   
+   ELSE product_type END AS product_type,  
+   CASE WHEN GROUPING(regist_date) = 1   
+   THEN '登记日期 合计'  
+   ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
+   SUM(sale_price) AS sum_price  
+   FROM Product  
+   GROUP BY ROLLUP(product_type, regist_date);  
  *输出结果*
 
 
@@ -206,14 +206,14 @@ SELECT product_type, SUM(sale_price)
 CUBE 的语法和 ROLLUP 相同，只需要将 ROLLUP 替换为 CUBE  
 **代码**  
 SELECT CASE WHEN GROUPING(product_type) = 1  
- THEN '商品种类 合计'  
- ELSE product_type END AS product_type,  
- CASE WHEN GROUPING(regist_date) = 1  
- THEN '登记日期 合计'  
- ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
- SUM(sale_price) AS sum_price  
- FROM Product  
- GROUP BY CUBE(product_type, regist_date)  
+  THEN '商品种类 合计'  
+  ELSE product_type END AS product_type,  
+  CASE WHEN GROUPING(regist_date) = 1  
+  THEN '登记日期 合计'  
+  ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
+  SUM(sale_price) AS sum_price  
+  FROM Product  
+  GROUP BY CUBE(product_type, regist_date)  
  *输出结果*
 
 
@@ -233,14 +233,14 @@ GROUPING SETS可以用于从 ROLLUP 或者 CUBE 的结果中取出部分记录�
 例如，之前的 CUBE 的结果就是根据聚合键的所有可能的组合计算而来的。如果希望从中选取出将“商品种类”和“登记日期”各自作为聚合键的结果，或者不想得到“合计记录和使用 2 个聚合键的记录”时，可以使用 GROUPING SETS。  
 **代码**  
 SELECT CASE WHEN GROUPING(product_type) = 1  
- THEN '商品种类 合计'  
- ELSE product_type END AS product_type,  
- CASE WHEN GROUPING(regist_date) = 1   
- THEN '登记日期 合计'  
- ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
- SUM(sale_price) AS sum_price  
- FROM Product  
- GROUP BY GROUPING SETS (product_type, regist_date)  
+  THEN '商品种类 合计'  
+  ELSE product_type END AS product_type,  
+  CASE WHEN GROUPING(regist_date) = 1   
+  THEN '登记日期 合计'  
+  ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
+  SUM(sale_price) AS sum_price  
+  FROM Product  
+  GROUP BY GROUPING SETS (product_type, regist_date)  
 *输出结果*  
 
 <img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226676-ee936100-bb3c-11eb-8886-096abba6d866.png">
