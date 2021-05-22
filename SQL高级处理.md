@@ -144,23 +144,23 @@ SELECT product_type, SUM(sale_price)
     * GROUP BY(product_type)
     
  GROUP BY () 表示没有聚合键，也就相当于没有 GROUP BY子句（这时会得到全部数据的合计行的记录），该合计行记录称为超级分组记录（super group row）。超级分组记录的 product_type列的键值（对 DBMS 来说）并不明确，因此会默认使用 NULL。
-* 将“登记日期”添加到聚合键当中  
+*将“登记日期”添加到聚合键当中*   
  **代码 在GROUP BY中添加“登记日期”（不使用ROLLUP）**  
  SELECT product_type, regist_date, SUM(sale_price) AS sum_price  
- FROM Product  
- GROUP BY product_type, regist_date  
- ORDER BY product_type
- *输出结果*
+  FROM Product  
+  GROUP BY product_type, regist_date  
+  ORDER BY product_type
+  *输出结果*
 
 <img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226656-ce63a200-bb3c-11eb-8f9b-997e69acb708.png">
 
 
  **代码 在GROUP BY中添加“登记日期”（使用ROLLUP）**  
  SELECT product_type, regist_date, SUM(sale_price) AS sum_price  
- FROM Product  
- GROUP BY ROLLUP(product_type, regist_date)  
- ORDER BY product_type
- *输出结果*
+  FROM Product  
+  GROUP BY ROLLUP(product_type, regist_date)  
+  ORDER BY product_type
+  *输出结果*
 
 <img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226660-d28fbf80-bb3c-11eb-91d4-677c340c4e21.png">
 
@@ -179,7 +179,7 @@ SELECT GROUPING(product_type) AS product_type,
  GROUP BY ROLLUP(product_type, regist_date)  
  *输出结果*
 
-![15](https://user-images.githubusercontent.com/80468800/119226662-da4f6400-bb3c-11eb-83cb-47909dd38348.png)
+<img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226662-da4f6400-bb3c-11eb-83cb-47909dd38348.png">
 
 
 * 使用 GROUPING 函数还能在超级分组记录的键值中插入字符串。也就是说，当 GROUPING 函数的返回值为 1 时，指定“合计”或者“小计”等字符串，其他情况返回通常的列的值。  
@@ -196,7 +196,7 @@ SELECT CASE WHEN GROUPING(product_type) = 1
  *输出结果*
 
 
-![16](https://user-images.githubusercontent.com/80468800/119226668-e20f0880-bb3c-11eb-8a92-3f5294bfa274.png)
+<img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226668-e20f0880-bb3c-11eb-8a92-3f5294bfa274.png">
 
   
  CAST(regist_date AS VARCHAR(16))  
@@ -216,7 +216,8 @@ SELECT CASE WHEN GROUPING(product_type) = 1
  GROUP BY CUBE(product_type, regist_date)  
 *输出结果*
 
-![17](https://user-images.githubusercontent.com/80468800/119226673-e6d3bc80-bb3c-11eb-94ac-832970b2a15f.png)
+
+<img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226673-e6d3bc80-bb3c-11eb-94ac-832970b2a15f.png">
 
 
 与 ROLLUP 的结果相比，CUBE 的结果中多出了几行记录。多出来的记录就是只把 regist_date 作为聚合键所得到的汇总结果。  
