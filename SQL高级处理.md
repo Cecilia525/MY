@@ -57,7 +57,8 @@ SELECT product_id, product_name, sale_price,
 　*输出结果*  
  
 <img width="577" alt="5" src="https://user-images.githubusercontent.com/80468800/119226597-82186200-bb3c-11eb-8b5c-f0ea96923edf.png">
-* AVG函数作为窗口函数使用  
+
+*AVG函数作为窗口函数使用*    
   **代码：**  
   SELECT product_id, product_name, sale_price,  
 　　AVG (sale_price) OVER ( ORDER BY product_id ) AS current_avg  
@@ -77,6 +78,7 @@ SELECT product_id, product_name, sale_price,
 *输出结果*
 
 <img width="593" alt="7" src="https://user-images.githubusercontent.com/80468800/119226602-8cd2f700-bb3c-11eb-9df0-94380d2f85a5.png">
+
 这里我们使用了 ROWS（“行”）和 PRECEDING（“之前”）两个关键字，将框架指定为“截止到之前 ~ 行”，因此“ROWS 2 PRECEDING”就是将框架指定为“截止到之前 2 行”，也就是将作为汇总对象的记录限定为“最靠近的 3 行”。就是说，由于框架是根据当前记录来确定的，因此和固定的窗口不同，其范围会随着当前记录的变化而变化。  
 使用关键字 FOLLOWING（“之后”）替换 PRECEDING，就可以指定“截止到之后 ~ 行”作为框架。  
 如果希望将当前记录的前后行作为汇总对象时，可以同时使用 PRECEDING（“之前”）和 FOLLOWING（“之后”）关键字来实现。  
@@ -160,7 +162,7 @@ SELECT product_type, SUM(sale_price)
  ORDER BY product_type
  *输出结果*
 
-![14](https://user-images.githubusercontent.com/80468800/119226660-d28fbf80-bb3c-11eb-91d4-677c340c4e21.png)
+<img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226660-d28fbf80-bb3c-11eb-91d4-677c340c4e21.png">
 
 
  将上述两个结果进行比较后我们发现，使用 ROLLUP 时多出了最上方的合计行以及 3 条不同商品种类的小计行（也就是未使用登记日期作为聚合键的记录），这 4 行就是我们所说的超级分组记录。也就是说，该SELECT 语句的结果相当于使用 UNION 对如下 3 种模式的聚合级的不同结果进行连接：
@@ -240,7 +242,7 @@ SELECT CASE WHEN GROUPING(product_type) = 1
  GROUP BY GROUPING SETS (product_type, regist_date)  
 *输出结果*  
 
-![18](https://user-images.githubusercontent.com/80468800/119226676-ee936100-bb3c-11eb-8886-096abba6d866.png)
+<img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226676-ee936100-bb3c-11eb-8886-096abba6d866.png">
 
 
 
