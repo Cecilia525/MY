@@ -231,6 +231,7 @@ CUBE就是将 GROUP BY 子句中聚合键的“所有可能的组合”的汇总
 ### 4.GROUPING SETS
 GROUPING SETS可以用于从 ROLLUP 或者 CUBE 的结果中取出部分记录。与 ROLLUP 或者CUBE 能够得到规定的结果相对，GROUPING SETS 用于从中取出个别条件对应的不固定的结果。  
 例如，之前的 CUBE 的结果就是根据聚合键的所有可能的组合计算而来的。如果希望从中选取出将“商品种类”和“登记日期”各自作为聚合键的结果，或者不想得到“合计记录和使用 2 个聚合键的记录”时，可以使用 GROUPING SETS。  
+
 **代码**  
 SELECT CASE WHEN GROUPING(product_type) = 1  
     THEN '商品种类 合计'  
@@ -240,7 +241,8 @@ SELECT CASE WHEN GROUPING(product_type) = 1
     ELSE CAST(regist_date AS VARCHAR(16)) END AS regist_date,  
     SUM(sale_price) AS sum_price  
     FROM Product  
-    GROUP BY GROUPING SETS (product_type, regist_date)  
+    GROUP BY GROUPING SETS (product_type, regist_date) 
+    
 *输出结果*  
 
 <img width="490" alt="13" src="https://user-images.githubusercontent.com/80468800/119226676-ee936100-bb3c-11eb-8886-096abba6d866.png">
